@@ -35,12 +35,12 @@
 # }
 
 if [ -z "$WERCKER_VIRTUALENV_PYTHON_LOCATION" ]; then
-    WERCKER_VIRTUALENV_PYTHON_LOCATION=`which python`
+    export WERCKER_VIRTUALENV_PYTHON_LOCATION=$(which python)
     info "using default python location: $WERCKER_VIRTUALENV_PYTHON_LOCATION"
 fi
 
 if [ -z "$WERCKER_VIRTUALENV_VIRTUALENV_LOCATION" ]; then
-    WERCKER_VIRTUALENV_VIRTUALENV_LOCATION=$HOME/venv
+    export WERCKER_VIRTUALENV_VIRTUALENV_LOCATION=$HOME/venv
     info "using default location: $HOME/venv"
 fi
 
@@ -73,9 +73,9 @@ fi
 "$VIRTUAL_ENV_COMMAND" --no-site-packages -p "$WERCKER_VIRTUALENV_PYTHON_LOCATION" "$WERCKER_VIRTUALENV_VIRTUALENV_LOCATION"
 
 info "Activating virtual enviromnent."
-source $WERCKER_VIRTUALENV_VIRTUALENV_LOCATION/bin/activate
+source "$WERCKER_VIRTUALENV_VIRTUALENV_LOCATION/bin/activate"
 
-mkdir -p $WERCKER_CACHE_DIR/pip-download-cache
+mkdir -p "$WERCKER_CACHE_DIR/pip-download-cache"
 
 info "Enabling generic pip environment variables:"
 echo "PIP_DOWNLOAD_CACHE=$WERCKER_CACHE_DIR/pip-download-cache"
