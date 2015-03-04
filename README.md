@@ -5,15 +5,24 @@ environment will also auto-install the python wheel package.
 
 # Options
 
-* `python_location` (optional, default=/usr/bin/python2.7) location of python
+* `python_location` (optional) if not set, the result of `which python` is used
 * `install_wheel` (optional, default=true)
+* `virtualenv_location` (optional) if not specified, $HOME/venv will be used.
 
 # Example
 
+Simplest usage:
 ```yaml
 build:
   steps:
     - virtualenv
+```
+
+An example that uses a non default python executable name/location:
+```yaml
+build:
+  steps:
+    - virtualenv:
         python_location=/usr/bin/python3.2
 ```
 
@@ -42,6 +51,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Changelog
 
+## 1.0.0.
+- make python
 ## 0.0.5
 - updated default virtualenv_location.
 - python_path is now python_location

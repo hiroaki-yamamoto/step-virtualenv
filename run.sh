@@ -34,6 +34,16 @@
 #   echo "${1}"
 # }
 
+if [ -z "$WERCKER_VIRTUALENV_PYTHON_LOCATION" ]; then
+    WERCKER_VIRTUALENV_PYTHON_LOCATION=`which python`
+    info "using default python location: $WERCKER_VIRTUALENV_PYTHON_LOCATION"
+fi
+
+if [ -z "$WERCKER_VIRTUALENV_VIRTUALENV_LOCATION" ]; then
+    WERCKER_VIRTUALENV_VIRTUALENV_LOCATION=$HOME/venv
+    info "using default location: $HOME/venv"
+fi
+
 VIRTUAL_ENV_COMMAND="virtualenv"
 
 if [[ -n "$WERCKER_STEP_ROOT" && $WERCKER_STEP_ROOT != "/wercker/steps/wercker/script/0.0.0" ]]; then
@@ -43,26 +53,24 @@ else
 fi
 
 is_python_version
-
 RESULT=$?
-
 if [ ! "$RESULT" -eq 0 ] ; then
     fail "Python not found for path: $WERCKER_VIRTUALENV_PYTHON_LOCATION"
 fi
 
 is_valid_venv_path
-
 RESULT=$?
-
 if [ ! "$RESULT" -eq 0 ] ; then
     fail "Directory for virtual environment already exists"
 fi
 
-if [ ! is_virtualenv_installed ] ; then
+is_virtualenv_installed
+RESULT=$?
+if [ ! "$RESULT" -eq 0 ] ; then
     fail "virtualenv was not found. It probably is not installed?"
 fi
 
-$VIRTUAL_ENV_COMMAND --no-site-packages -p $WERCKER_VIRTUALENV_PYTHON_LOCATION $WERCKER_VIRTUALENV_VIRTUALENV_LOCATION
+"$VIRTUAL_ENV_COMMAND" --no-site-packages -p "$WERCKER_VIRTUALENV_PYTHON_LOCATION" "$WERCKER_VIRTUALENV_VIRTUALENV_LOCATION"
 
 info "Activating virtual enviromnent."
 source $WERCKER_VIRTUALENV_VIRTUALENV_LOCATION/bin/activate
@@ -73,12 +81,12 @@ info "Enabling generic pip environment variables:"
 echo "PIP_DOWNLOAD_CACHE=$WERCKER_CACHE_DIR/pip-download-cache"
 export PIP_DOWNLOAD_CACHE=$WERCKER_CACHE_DIR/pip-download-cache
 
-if [ $WERCKER_VIRTUALENV_INSTALL_WHEEL = "true" ]; then
+if [ "$WERCKER_VIRTUALENV_INSTALL_WHEEL" == "true" ]; then
 
     info "Installing wheel package"
     pip install wheel
 
-    mkdir -p $WERCKER_CACHE_DIR/pip-wheels
+    mkdir -p "$WERCKER_CACHE_DIR/pip-wheels"
 
     info "Setting wercker wheel enviromnent variable:"
     info "WERCKER_WHEEL_DIR=$WERCKER_CACHE_DIR/pip-wheels"
