@@ -1,7 +1,9 @@
-box: wercker/default
+box: wercker/python
 build:
   steps:
     - validate-wercker-step
+    - shellcheck:
+        files: run.sh
     - script:
         name: Run tests
         code: ./script/spec
