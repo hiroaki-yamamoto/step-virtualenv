@@ -13,7 +13,7 @@ it_returns_truthy_if_python_exists() {
 
 it_returns_falsy_if_python_doesnt_exist() {
     # WERCKER_VIRTUALENV_PYTHON_LOCATION='/usr/doesnt/exist'
-    WERCKER_VIRTUALENV_PYTHON_LOCATION="/usr/bin/python3.2"
+    WERCKER_VIRTUALENV_PYTHON_LOCATION="/usr/bin/python3.9"
     result=$(set +e ; is_python_version ; echo $?)
     test 1 -eq $result
 }
