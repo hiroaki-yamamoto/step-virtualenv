@@ -5,6 +5,7 @@ build:
 
 python27:
   box: wercker/python
+  steps:
     - shellcheck:
         files: run.sh
     - script:
