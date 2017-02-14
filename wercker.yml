@@ -1,7 +1,10 @@
-box: wercker/python
 build:
+  box: node:latext
   steps:
     - validate-wercker-step
+
+python27:
+  box: wercker/python
     - shellcheck:
         files: run.sh
     - script:
