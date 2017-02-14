@@ -1,5 +1,5 @@
 build:
-  box: node:latext
+  box: node:slim
   steps:
     - validate-wercker-step
 
